@@ -46,6 +46,18 @@ export default async function formHandler(req, res) {
   
     Create transporter variable used by nodemailer based on testing environment
 
+    Google Object
+    nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          type: 'OAuth2',
+          user: 'andrew@citynorth.church',
+          clientId: process.env.GMAIL_CLIENT_ID,
+          clientSecret: process.env.GMAIL_CLIENT_SECRET,
+          refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+          accessToken: accessToken,
+        },
+
   */
   const transporter = testing
     ? nodemailer.createTransport({
@@ -57,14 +69,11 @@ export default async function formHandler(req, res) {
         },
       })
     : nodemailer.createTransport({
-        service: 'gmail',
+        host: 'live.smtp.mailtrap.io',
+        port: 587,
         auth: {
-          type: 'OAuth2',
-          user: 'andrew@citynorth.church',
-          clientId: process.env.GMAIL_CLIENT_ID,
-          clientSecret: process.env.GMAIL_CLIENT_SECRET,
-          refreshToken: process.env.GMAIL_REFRESH_TOKEN,
-          accessToken: accessToken,
+          user: process.env.MAILTRAP_USER,
+          pass: process.env.MAILTRAP_PASSKEY,
         },
       })
 
